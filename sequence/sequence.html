@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <ul id="list"></ul>
+        <div id="answer"></div>
+        <div>
+            <button id="newSequenceButton">Новая последовательность</button>
+            <button id="showSequenceButton">Показать ответ</button>
+        </div>
+        <script type="module">
+            import {renderSequence, generateSequence, renderAnswer} from './sequence.js';
+            let sequence = [];
+            const newSequenceButton = document.getElementById('newSequenceButton');
+            newSequenceButton.addEventListener('click', () => {
+                document.getElementById('answer').innerHTML = '';
+                sequence = generateSequence(8);
+                renderSequence(sequence, 'list');
+            });
+            const showSequenceButton = document.getElementById('showSequenceButton');
+            showSequenceButton.addEventListener('click', () => {
+                document.getElementById('answer').innerHTML = '';
+                renderAnswer(sequence, 'answer');
+            });
+        </script>
+    </body>
+</html>
