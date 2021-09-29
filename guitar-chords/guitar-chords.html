@@ -4,6 +4,19 @@
 </head>
 <body>
 <h1>Chord Trainer</h1>
+<form id="form">
+   <fieldset>
+      <legend>Выбери типы аккордов</legend>
+      <div>
+        <input type="checkbox" id="major" name="major" value="">
+        <label for="major">Мажорные</label>
+      </div>
+      <div>
+        <input type="checkbox" id="minor" name="minor" value="m">
+        <label for="minor">Минорные</label>
+      </div>
+    </fieldset>
+</form>
 <button id="button">Generate</button>
 <div id="result" class="cards-container"></div>
 
@@ -31,33 +44,11 @@
    }
 </style>
 
-<script>
-const chords = ["A", "B", "C", "D", "E", "F", "G", "B"];
-const accd = ["#", "", "♭"]
-const types = ["maj", "m7", "m7♭5", "7", "dim"];
+<script type="module">
 
+import {getRandomChords} from './chords-generator.js'
 
 const button = document.getElementById("button");
-
-function random(min, max) {
-   
-   const result = Math.round(Math.random() * (max - min) + min);
-   return Math.round(result)
-}
-
-function randomAccd() {
-   return accd[random(0, accd.length - 1)];
-}
-
-function randomType() {
-   return types[random(0, types.length - 1)];
-}
-
-function getRandomChords() {
-   return shuffle(chords).map((chord) => {
-      return chord + randomAccd() + randomType()
-   });
-}
 
 function showChords(result) {
    const div = document.getElementById("result");
@@ -66,28 +57,22 @@ function showChords(result) {
       .join("");
 }
 
+function getChordTypes() {
+   const {elements} = document.getElementById("form");
+   const values = Array.from(elements)
+      .filter(e => e instanceof HTMLInputElement)
+      .filter(e => e.checked)
+      .map(e => e.value);
 
-function generateChords() {
-   const result = getRandomChords();
-   showChords(result);
+   return values;
 }
 
-function shuffle(array) {
-  var currentIndex = array.length,  randomIndex;
-
-  // While there remain elements to shuffle...
-  while (currentIndex != 0) {
-
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-
-    // And swap it with the current element.
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex], array[currentIndex]];
-  }
-
-  return array;
+function generateChords() {
+   const types = getChordTypes();
+   if (types.length > 0) {
+      const result = getRandomChords(types, ['35', '6', '64']);
+      showChords(result);
+   }
 }
 
 button.addEventListener('click', generateChords);
